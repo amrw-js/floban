@@ -1,6 +1,6 @@
 "use client";
 
-import { Columns, COLUMNS_TITLES } from "../../constants/tasks.constants";
+import { Columns, COLUMNS_TITLES } from "../../constants/board.constants";
 import { useColumns } from "../../hooks/useColumn";
 import { Column } from "../column/Column";
 import { DndBoard } from "./DndBoard";

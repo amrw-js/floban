@@ -1,4 +1,4 @@
-import { Columns } from "../constants/tasks.constants";
+import { Columns } from "../constants/board.constants";
 
 export type DragItem = {
   id: string;

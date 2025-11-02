@@ -1,8 +1,8 @@
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 
-import { Columns } from "../constants/tasks.constants";
-import { Task } from "../types/tasks.types";
+import { Columns } from "../constants/board.constants";
+import { Task } from "../types/board.types";
 
 type UseDndTaskParams = {
   taskId: Task["id"];

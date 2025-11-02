@@ -1,36 +1,31 @@
-import { Columns } from "../constants/tasks.constants";
-import { useGetColumnTasksQuery } from "../lib/apis/tasks.api";
+import { Columns } from "../constants/board.constants";
+import { useGetColumnTasksQuery } from "../lib/apis/board.api";
+import { selectTasksByColumn } from "../lib/selectors/board.selectors";
+import { useAppSelector } from "../lib/store";
 
 export const useColumns = () => {
-  const {
-    data: backlogTasks = [],
-    isLoading: backlogTasksLoading,
-    isError: backlogTasksError,
-  } = useGetColumnTasksQuery(Columns.BACKLOG);
+  const { isLoading: backlogTasksLoading, isError: backlogTasksError } =
+    useGetColumnTasksQuery(Columns.BACKLOG);
 
-  const {
-    data: todoTasks = [],
-    isLoading: todoTasksLoading,
-    isError: todoTasksError,
-  } = useGetColumnTasksQuery(Columns.TODO);
+  const { isLoading: todoTasksLoading, isError: todoTasksError } =
+    useGetColumnTasksQuery(Columns.TODO);
 
-  const {
-    data: inProgressTasks = [],
-    isLoading: inProgressTasksLoading,
-    isError: inProgressTasksError,
-  } = useGetColumnTasksQuery(Columns.IN_PROGRESS);
+  const { isLoading: inProgressTasksLoading, isError: inProgressTasksError } =
+    useGetColumnTasksQuery(Columns.IN_PROGRESS);
 
-  const {
-    data: reviewTasks = [],
-    isLoading: reviewTasksLoading,
-    isError: reviewTasksError,
-  } = useGetColumnTasksQuery(Columns.REVIEW);
+  const { isLoading: reviewTasksLoading, isError: reviewTasksError } =
+    useGetColumnTasksQuery(Columns.REVIEW);
 
-  const {
-    data: doneTasks = [],
-    isLoading: doneTasksLoading,
-    isError: doneTasksError,
-  } = useGetColumnTasksQuery(Columns.DONE);
+  const { isLoading: doneTasksLoading, isError: doneTasksError } =
+    useGetColumnTasksQuery(Columns.DONE);
+
+  const backlogTasks = useAppSelector(selectTasksByColumn(Columns.BACKLOG));
+  const todoTasks = useAppSelector(selectTasksByColumn(Columns.TODO));
+  const inProgressTasks = useAppSelector(
+    selectTasksByColumn(Columns.IN_PROGRESS)
+  );
+  const reviewTasks = useAppSelector(selectTasksByColumn(Columns.REVIEW));
+  const doneTasks = useAppSelector(selectTasksByColumn(Columns.DONE));
 
   return {
     backlogTasks,

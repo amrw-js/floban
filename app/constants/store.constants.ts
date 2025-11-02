@@ -1,8 +1,8 @@
 export const SLICES = {
   MODALS: "modals",
-  TASKS: "tasks",
+  BOARD: "board",
 } as const;
 
 export const REDUCER_PATHS = {
-  TASKS_API: "tasksApi",
+  BOARD_API: "boardApi",
 } as const;

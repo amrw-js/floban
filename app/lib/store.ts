@@ -2,20 +2,20 @@ import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, useSelector, useStore } from "react-redux";
 
 import { SLICES } from "../constants/store.constants";
-import { tasksApi } from "./apis/tasks.api";
+import { boardApi } from "./apis/board.api";
+import { boardSlice } from "./slices/board.slice";
 import { modalsSlice } from "./slices/modals.slice";
-import { tasksSlice } from "./slices/tasks.slice";
 
 export const makeStore = () =>
   configureStore({
     reducer: {
-      [tasksApi.reducerPath]: tasksApi.reducer,
+      [boardApi.reducerPath]: boardApi.reducer,
       [SLICES.MODALS]: modalsSlice.reducer,
-      [SLICES.TASKS]: tasksSlice.reducer,
+      [SLICES.BOARD]: boardSlice.reducer,
     },
     devTools: process.env.NODE_ENV !== "production",
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(tasksApi.middleware),
+      getDefaultMiddleware().concat(boardApi.middleware),
   });
 
 export type AppStore = ReturnType<typeof makeStore>;

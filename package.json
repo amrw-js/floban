@@ -9,7 +9,7 @@
     "dev:all": "concurrently \"npm run dev\" \"npm run api\"",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "generate-mocks": "node scripts/generateMocks.mjs 500",
+    "generate-mocks": "node scripts/generateMocks.mjs 50",
     "lint": "eslint .",
     "prepare": "husky",
     "start": "next start"

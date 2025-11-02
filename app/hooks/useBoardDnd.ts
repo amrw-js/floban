@@ -2,9 +2,9 @@ import { useCallback, useState } from "react";
 
 import { DragEndEvent, DragStartEvent } from "@dnd-kit/core";
 
-import { Columns } from "../constants/tasks.constants";
-import { useUpdateTaskMutation } from "../lib/apis/tasks.api";
-import { Task } from "../types/tasks.types";
+import { Columns } from "../constants/board.constants";
+import { useUpdateTaskMutation } from "../lib/apis/board.api";
+import { Task } from "../types/board.types";
 
 export const useBoardDnd = () => {
   const [activeTask, setActiveTask] = useState<Task | null>(null);

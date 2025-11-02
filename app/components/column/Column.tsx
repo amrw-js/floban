@@ -5,9 +5,9 @@ import { FC, useRef } from "react";
 import { Paper } from "@mui/material";
 import cn from "clsx";
 
-import { Columns } from "../../constants/tasks.constants";
+import { Columns } from "../../constants/board.constants";
 import { useDndColumn } from "../../hooks/useDndColumn";
-import { Task } from "../../types/tasks.types";
+import { Task } from "../../types/board.types";
 import { TaskCard } from "../TaskCard";
 import { VirtualList } from "../VirtualList";
 import { ColumnError } from "./ColumnError";

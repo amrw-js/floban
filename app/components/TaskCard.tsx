@@ -3,9 +3,9 @@ import { FC } from "react";
 import { Card, CardContent } from "@mui/material";
 import cn from "clsx";
 
-import { Columns } from "../constants/tasks.constants";
+import { Columns } from "../constants/board.constants";
 import { useDndTask } from "../hooks/useDndTask";
-import { Task } from "../types/tasks.types";
+import { Task } from "../types/board.types";
 
 type TaskCardProps = {
   task: Task;

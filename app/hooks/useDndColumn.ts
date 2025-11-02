@@ -1,6 +1,6 @@
 import { useDroppable } from "@dnd-kit/core";
 
-import { Columns } from "../constants/tasks.constants";
+import { Columns } from "../constants/board.constants";
 
 type UseDndColumnParams = {
   column: Columns;
