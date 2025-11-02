@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import { TASKS_ENDPOINTS } from "@/app/constants/endpoints.constants";
 import { REDUCER_PATHS } from "@/app/constants/store.constants";
+import { Columns } from "@/app/constants/tasks.constants";
 import { getApiUrl } from "@/app/helpers/getApiUrl";
 import { Task } from "@/app/types/tasks.types";
 
@@ -18,6 +19,10 @@ export const tasksApi = createApi({
     }),
     getTaskById: builder.query<Task, number | string>({
       query: (id) => TASKS_ENDPOINTS.TASK_BY_ID(id),
+      providesTags: ["tasks"],
+    }),
+    getColumnTasks: builder.query<Task[], Columns>({
+      query: (column) => TASKS_ENDPOINTS.COLUMN_TASKS(column),
       providesTags: ["tasks"],
     }),
     createTask: builder.mutation<Task, Omit<Task, "id">>({
@@ -46,10 +51,6 @@ export const tasksApi = createApi({
       }),
       invalidatesTags: ["tasks"],
     }),
-    getTasksByColumn: builder.query<Task[], string>({
-      query: (column) => `${TASKS_ENDPOINTS.TASKS}?column=${column}`,
-      providesTags: ["tasks"],
-    }),
   }),
 });
 
@@ -59,5 +60,5 @@ export const {
   useCreateTaskMutation,
   useUpdateTaskMutation,
   useDeleteTaskMutation,
-  useGetTasksByColumnQuery,
+  useGetColumnTasksQuery,
 } = tasksApi;

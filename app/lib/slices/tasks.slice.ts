@@ -24,7 +24,6 @@ export const tasksSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // Get all tasks
     builder.addMatcher(
       tasksApi.endpoints.getTasks.matchFulfilled,
       (state, action) => {
@@ -39,7 +38,6 @@ export const tasksSlice = createSlice({
       }
     );
 
-    // Create task
     builder.addMatcher(
       tasksApi.endpoints.createTask.matchFulfilled,
       (state, action) => {
@@ -48,7 +46,6 @@ export const tasksSlice = createSlice({
       }
     );
 
-    // Update task
     builder.addMatcher(
       tasksApi.endpoints.updateTask.matchFulfilled,
       (state, action) => {
@@ -73,7 +70,7 @@ export const tasksSlice = createSlice({
     );
 
     builder.addMatcher(
-      tasksApi.endpoints.getTasksByColumn.matchFulfilled,
+      tasksApi.endpoints.getColumnTasks.matchFulfilled,
       (state, action) => {
         state.tasks = action.payload;
       }

@@ -5,9 +5,6 @@ export const getApiUrl = () => {
     case "development":
       return process.env.NEXT_PUBLIC_API_DEV_BASE_URL;
 
-    case "test":
-      return process.env.NEXT_PUBLIC_API_TESTING_BASE_URL;
-
     default:
       return process.env.NEXT_PUBLIC_API_BASE_URL;
   }
