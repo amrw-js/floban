@@ -6,23 +6,23 @@ import { useVirtualScroll } from "../hooks/useVirtualScroll";
 
 type VirtualListProps = {
   itemCount: number;
-  renderItem: (index: number) => ReactElement;
   itemHeight: number;
   gap?: number;
   overscan?: number;
   emptyState?: ReactElement;
   scrollContainerRef: RefObject<HTMLDivElement | null>;
+  renderItem: (index: number) => ReactElement;
 };
 
-export const VirtualList: FC<VirtualListProps> = (props): ReactElement => {
+export const VirtualList: FC<VirtualListProps> = (props) => {
   const {
     itemCount,
+    renderItem,
     itemHeight,
     gap = 12,
     overscan = 3,
     emptyState,
     scrollContainerRef,
-    renderItem,
   } = props;
 
   const { visibleIndices, totalHeight, offsetTop } = useVirtualScroll({

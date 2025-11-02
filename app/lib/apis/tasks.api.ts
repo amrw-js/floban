@@ -39,7 +39,7 @@ export const tasksApi = createApi({
     >({
       query: ({ id, task }) => ({
         url: TASKS_ENDPOINTS.TASK_BY_ID(id),
-        method: "PUT",
+        method: "PATCH",
         body: task,
       }),
       invalidatesTags: ["tasks"],

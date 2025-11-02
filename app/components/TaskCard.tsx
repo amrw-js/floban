@@ -3,20 +3,41 @@ import { FC } from "react";
 import { Card, CardContent } from "@mui/material";
 import cn from "clsx";
 
+import { Columns } from "../constants/tasks.constants";
+import { useDndTask } from "../hooks/useDndTask";
 import { Task } from "../types/tasks.types";
 
 type TaskCardProps = {
   task: Task;
+  column: Columns;
+  index: number;
   className?: string;
 };
 
 export const TaskCard: FC<TaskCardProps> = (props) => {
-  const { task, className } = props;
+  const { task, column, index, className } = props;
+
+  const { setNodeRef, attributes, listeners, style, isDragging } = useDndTask({
+    taskId: task.id,
+    column,
+    index,
+    task,
+  });
 
   return (
-    <Card className={cn("h-full transition-shadow hover:shadow-lg", className)}>
-      <CardContent>
-        <div className="flex flex-col gap-3">
+    <Card
+      ref={setNodeRef}
+      style={style}
+      {...listeners}
+      {...attributes}
+      className={cn(
+        "h-full cursor-grab transition-all hover:shadow-lg active:cursor-grabbing",
+        isDragging && "opacity-0",
+        className
+      )}
+    >
+      <CardContent className="h-full">
+        <div className="flex h-full flex-col gap-3">
           <h4 className="text-base font-medium text-gray-900">{task.title}</h4>
 
           {task.description && (
