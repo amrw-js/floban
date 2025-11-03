@@ -57,7 +57,8 @@ export const boardApi = createApi({
           order: newOrder,
         },
       }),
-      invalidatesTags: ["board"],
+
+      invalidatesTags: (_, error) => (error ? ["board"] : []),
     }),
     deleteTask: builder.mutation<void, number | string>({
       query: (id) => ({

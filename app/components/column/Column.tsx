@@ -2,11 +2,15 @@
 
 import { FC, useRef } from "react";
 
+import { useDroppable } from "@dnd-kit/core";
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 import { Paper } from "@mui/material";
 import cn from "clsx";
 
 import { Columns } from "../../constants/board.constants";
-import { useDndColumn } from "../../hooks/useDndColumn";
 import { Task } from "../../types/board.types";
 import { TaskCard } from "../TaskCard";
 import { VirtualList } from "../VirtualList";
@@ -23,18 +27,36 @@ type ColumnProps = {
   loading: boolean;
   errored: boolean | unknown;
   className?: string;
+  overIndex: number | null;
+  overColumn: Columns | null;
+  activeTask?: Task | null;
 };
 
 const ITEM_HEIGHT = 200;
 const GAP = 12;
 
 export const Column: FC<ColumnProps> = (props) => {
-  const { column, title, taskCount, tasks, loading, errored, className } =
-    props;
+  const {
+    column,
+    title,
+    taskCount,
+    tasks,
+    loading,
+    errored,
+    className,
+    overIndex,
+    overColumn,
+    activeTask,
+  } = props;
 
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
 
-  const { setNodeRef, isOver } = useDndColumn({ column });
+  const { setNodeRef } = useDroppable({
+    id: column,
+    data: { column },
+  });
+
+  const taskIds = tasks.map((task) => task.id.toString());
 
   const renderContent = () => {
     if (loading) {
@@ -45,42 +67,55 @@ export const Column: FC<ColumnProps> = (props) => {
       return <ColumnError />;
     }
 
+    const renderItem = (index: number) => {
+      const task = tasks[index];
+      if (!task) {
+        return <div />;
+      }
+
+      const isActiveTask = activeTask?.id === task.id;
+      const shouldShowPlaceholder =
+        overColumn === column && overIndex === index && !isActiveTask;
+
+      return (
+        <div className="relative h-full">
+          {shouldShowPlaceholder && (
+            <div className="absolute inset-0 z-10 rounded-lg border-2 border-dashed border-blue-400 bg-blue-50 opacity-70" />
+          )}
+          <TaskCard column={column} task={task} index={index} />
+        </div>
+      );
+    };
+
     return (
-      <VirtualList
-        itemCount={taskCount}
-        renderItem={(index) => {
-          return <TaskCard task={tasks[index]} column={column} index={index} />;
-        }}
-        itemHeight={ITEM_HEIGHT}
-        gap={GAP}
-        overscan={3}
-        emptyState={<ColumnPlaceHolder />}
-        scrollContainerRef={scrollContainerRef}
-      />
+      <SortableContext items={taskIds} strategy={verticalListSortingStrategy}>
+        <VirtualList
+          itemCount={taskCount}
+          generateKey={(index) => tasks[index]?.id ?? index}
+          renderItem={renderItem}
+          itemHeight={ITEM_HEIGHT}
+          gap={GAP}
+          overscan={3}
+          emptyState={<ColumnPlaceHolder />}
+          scrollContainerRef={scrollContainerRef}
+        />
+      </SortableContext>
     );
   };
 
   return (
     <Paper
       ref={setNodeRef}
-      elevation={isOver ? 4 : 2}
       className={cn(
-        "flex h-full flex-1 flex-col overflow-hidden rounded-lg transition-all duration-200",
-        isOver
-          ? "scale-[1.02] bg-blue-50 ring-2 ring-blue-500 ring-offset-2"
-          : "bg-gray-100",
+        "flex h-full min-w-[250px] flex-1 flex-col overflow-hidden rounded-lg transition-all duration-200",
         className
       )}
     >
-      <ColumnHeader
-        className={cn(isOver && "bg-blue-50")}
-        title={title}
-        taskCount={taskCount}
-      />
+      <ColumnHeader title={title} taskCount={taskCount} />
 
       <div
         ref={scrollContainerRef}
-        className="custom-scrollbar flex-1 overflow-x-hidden overflow-y-auto px-4 pb-4"
+        className="flex-1 overflow-x-hidden overflow-y-auto px-4 py-2"
       >
         {renderContent()}
       </div>

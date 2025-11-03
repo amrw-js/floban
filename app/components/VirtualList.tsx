@@ -12,6 +12,7 @@ type VirtualListProps = {
   emptyState?: ReactElement;
   scrollContainerRef: RefObject<HTMLDivElement | null>;
   renderItem: (index: number) => ReactElement;
+  generateKey: (index: number) => string | number;
 };
 
 export const VirtualList: FC<VirtualListProps> = (props) => {
@@ -23,6 +24,7 @@ export const VirtualList: FC<VirtualListProps> = (props) => {
     overscan = 3,
     emptyState,
     scrollContainerRef,
+    generateKey,
   } = props;
 
   const { visibleIndices, totalHeight, offsetTop } = useVirtualScroll({
@@ -52,7 +54,7 @@ export const VirtualList: FC<VirtualListProps> = (props) => {
       >
         {visibleIndices.map((index) => (
           <Box
-            key={index}
+            key={generateKey(index) ?? index}
             sx={{
               height: `${itemHeight}px`,
               marginBottom: index < itemCount - 1 ? `${gap}px` : 0,

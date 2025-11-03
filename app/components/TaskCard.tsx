@@ -1,28 +1,39 @@
 import { FC } from "react";
 
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import { Card, CardContent } from "@mui/material";
 import cn from "clsx";
 
 import { Columns } from "../constants/board.constants";
-import { useDndTask } from "../hooks/useDndTask";
 import { Task } from "../types/board.types";
 
 type TaskCardProps = {
   task: Task;
-  column: Columns;
   index: number;
+  column: Columns | null;
   className?: string;
 };
 
 export const TaskCard: FC<TaskCardProps> = (props) => {
-  const { task, column, index, className } = props;
+  const { task, className, index, column } = props;
 
-  const { setNodeRef, attributes, listeners, style, isDragging } = useDndTask({
-    taskId: task.id,
-    column,
-    index,
-    task,
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: task.id.toString(),
+    data: { ...task, index, column },
   });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
 
   return (
     <Card
@@ -31,8 +42,8 @@ export const TaskCard: FC<TaskCardProps> = (props) => {
       {...listeners}
       {...attributes}
       className={cn(
-        "h-full cursor-grab transition-all hover:shadow-lg active:cursor-grabbing",
-        isDragging && "opacity-0",
+        "h-full cursor-grab transition-all select-none hover:shadow-lg active:cursor-grabbing",
+        isDragging && "opacity-50",
         className
       )}
     >

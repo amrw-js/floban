@@ -1,9 +1,16 @@
 "use client";
 
+import { useState } from "react";
+
+import { DndContext, DragOverlay } from "@dnd-kit/core";
+
+import { useTaskDnd } from "@/app/hooks/useTaskDnd";
+import { Task } from "@/app/types/board.types";
+
 import { Columns, COLUMNS_TITLES } from "../../constants/board.constants";
 import { useColumns } from "../../hooks/useColumn";
 import { Column } from "../column/Column";
-import { DndBoard } from "./DndBoard";
+import { TaskCard } from "../TaskCard";
 
 export const Board = () => {
   const {
@@ -24,8 +31,24 @@ export const Board = () => {
     doneTasksError,
   } = useColumns();
 
+  const [activeTask, setActiveTask] = useState<Task | null>(null);
+  const [overIndex, setOverIndex] = useState<number | null>(null);
+  const [overColumn, setOverColumn] = useState<Columns | null>(null);
+
+  const { handleDragEnd, handleDragStart, handleDragOver, handleDragCancel } =
+    useTaskDnd({
+      setActiveTask,
+      setOverIndex,
+      setOverColumn,
+    });
+
   return (
-    <DndBoard>
+    <DndContext
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+      onDragOver={handleDragOver}
+      onDragCancel={handleDragCancel}
+    >
       <div className="flex h-full w-full items-start gap-4 overflow-auto rounded-md bg-neutral-50 p-4 drop-shadow-sm">
         <Column
           column={Columns.BACKLOG}
@@ -34,6 +57,8 @@ export const Board = () => {
           taskCount={backlogTasks.length}
           loading={backlogTasksLoading}
           errored={backlogTasksError}
+          overIndex={overIndex}
+          overColumn={overColumn}
         />
         <Column
           column={Columns.TODO}
@@ -42,6 +67,8 @@ export const Board = () => {
           taskCount={todoTasks.length}
           loading={todoTasksLoading}
           errored={todoTasksError}
+          overIndex={overIndex}
+          overColumn={overColumn}
         />
         <Column
           column={Columns.IN_PROGRESS}
@@ -50,6 +77,8 @@ export const Board = () => {
           taskCount={inProgressTasks.length}
           loading={inProgressTasksLoading}
           errored={inProgressTasksError}
+          overIndex={overIndex}
+          overColumn={overColumn}
         />
         <Column
           column={Columns.REVIEW}
@@ -58,6 +87,8 @@ export const Board = () => {
           taskCount={reviewTasks.length}
           loading={reviewTasksLoading}
           errored={reviewTasksError}
+          overIndex={overIndex}
+          overColumn={overColumn}
         />
         <Column
           column={Columns.DONE}
@@ -66,8 +97,20 @@ export const Board = () => {
           taskCount={doneTasks.length}
           loading={doneTasksLoading}
           errored={doneTasksError}
+          overIndex={overIndex}
+          overColumn={overColumn}
         />
       </div>
-    </DndBoard>
+      <DragOverlay>
+        {activeTask ? (
+          <TaskCard
+            task={activeTask}
+            index={0}
+            column={null}
+            className="scale-105 shadow-2xl"
+          />
+        ) : null}
+      </DragOverlay>
+    </DndContext>
   );
 };

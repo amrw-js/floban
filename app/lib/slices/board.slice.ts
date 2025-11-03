@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { Columns } from "@/app/constants/board.constants";
 import { SLICES } from "@/app/constants/store.constants";
@@ -9,6 +9,14 @@ import { boardApi } from "../apis/board.api";
 export interface TasksState {
   board: Record<Columns, Task[]>;
   currentTask: Task | null;
+}
+
+interface MoveTaskPayload {
+  taskId: string;
+  from: Columns;
+  to: Columns;
+  toIndex: number;
+  newOrder: number;
 }
 
 const initialState: TasksState = {
@@ -25,12 +33,37 @@ const initialState: TasksState = {
 export const boardSlice = createSlice({
   name: SLICES.BOARD,
   initialState,
-  reducers: {},
+  reducers: {
+    moveTaskLocally: (state, action: PayloadAction<MoveTaskPayload>) => {
+      const { taskId, from, to, toIndex, newOrder } = action.payload;
+
+      const fromTasks = [...state.board[from as Columns]];
+      const taskIndex = fromTasks.findIndex((t) => t.id.toString() === taskId);
+
+      if (taskIndex === -1) return;
+
+      const [movedTask] = fromTasks.splice(taskIndex, 1);
+      movedTask.column = to;
+      movedTask.order = newOrder;
+
+      if (from === to) {
+        fromTasks.splice(toIndex, 0, movedTask);
+        state.board[from] = fromTasks.map((t, i) => ({ ...t, order: i }));
+      } else {
+        const toTasks = [...state.board[to as Columns]];
+        toTasks.splice(toIndex, 0, movedTask);
+
+        state.board[from] = fromTasks.map((t, i) => ({ ...t, order: i }));
+
+        state.board[to] = toTasks.map((t, i) => ({ ...t, order: i }));
+      }
+    },
+  },
   extraReducers: (builder) => {
     builder.addMatcher(
       boardApi.endpoints.getColumnTasks.matchFulfilled,
       (state, action) => {
-        const column = action.meta.arg.originalArgs;
+        const column = action.meta.arg.originalArgs as Columns;
         state.board[column] = action.payload;
       }
     );
@@ -46,9 +79,10 @@ export const boardSlice = createSlice({
           [Columns.DONE]: [],
         };
 
-        action.payload.forEach((task) => {
+        for (const task of action.payload) {
           newBoard[task.column].push(task);
-        });
+        }
+
         state.board = newBoard;
       }
     );
@@ -102,5 +136,7 @@ export const boardSlice = createSlice({
     );
   },
 });
+
+export const { moveTaskLocally } = boardSlice.actions;
 
 export default boardSlice.reducer;

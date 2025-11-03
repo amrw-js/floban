@@ -15,7 +15,7 @@ export const ColumnHeader: FC<ColumnHeaderProps> = (props) => {
   return (
     <div
       className={cn(
-        "mb-4 flex items-center justify-between border-b border-gray-300 p-4 pb-3",
+        "flex items-center justify-between border-b border-gray-300 p-4 pb-3",
         className
       )}
     >
