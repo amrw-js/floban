@@ -5,6 +5,13 @@ A simple Kanban-style task management app built with **Next.js**, **Redux Toolki
 
 ---
 
+## 🖼️ Live Demo
+
+🌐 **App (Vercel):** [https://floban.vercel.app](https://floban.vercel.app)
+🧠 **Mock API (Render):** [https://floban.onrender.com](https://floban.onrender.com)
+
+---
+
 ## 🚀 Getting Started
 
 ### 1️⃣ Install dependencies
