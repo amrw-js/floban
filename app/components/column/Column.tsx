@@ -30,6 +30,8 @@ type ColumnProps = {
   overIndex: number | null;
   overColumn: Columns | null;
   activeTask?: Task | null;
+  onTaskClick?: (task: Task, column: Columns | null) => void;
+  onAddTask?: (column: Columns) => void;
 };
 
 const ITEM_HEIGHT = 150;
@@ -47,6 +49,8 @@ export const Column: FC<ColumnProps> = (props) => {
     overIndex,
     overColumn,
     activeTask,
+    onTaskClick,
+    onAddTask,
   } = props;
 
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
@@ -82,7 +86,12 @@ export const Column: FC<ColumnProps> = (props) => {
           {shouldShowPlaceholder && (
             <div className="absolute inset-0 z-10 rounded-lg border-2 border-dashed border-blue-400 bg-blue-50 opacity-70" />
           )}
-          <TaskCard column={column} task={task} index={index} />
+          <TaskCard
+            onClick={onTaskClick}
+            column={column}
+            task={task}
+            index={index}
+          />
         </div>
       );
     };
@@ -111,7 +120,12 @@ export const Column: FC<ColumnProps> = (props) => {
         className
       )}
     >
-      <ColumnHeader title={title} taskCount={taskCount} />
+      <ColumnHeader
+        column={column}
+        onAddTask={onAddTask}
+        title={title}
+        taskCount={taskCount}
+      />
 
       <div
         ref={scrollContainerRef}

@@ -8,3 +8,9 @@ export const selectModalsSlice = (state: RootState): ModalsSlices =>
 
 export const selectTaskModalOpen = (state: RootState) =>
   selectModalsSlice(state).taskModalOpen;
+
+export const selectPreviewedTaskId = (state: RootState) =>
+  selectModalsSlice(state).previewedTaskId;
+
+export const selectCreateTaskFor = (state: RootState) =>
+  selectModalsSlice(state).createTaskFor;

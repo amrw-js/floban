@@ -3,6 +3,8 @@ import { Task } from "./board.types";
 
 export type ModalsSlices = {
   taskModalOpen: boolean;
+  previewedTaskId: Task["id"] | null;
+  createTaskFor: Columns | null;
 };
 
 export type TasksState = {

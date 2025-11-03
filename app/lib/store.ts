@@ -3,6 +3,7 @@ import { useDispatch, useSelector, useStore } from "react-redux";
 
 import { SLICES } from "../constants/store.constants";
 import { boardApi } from "./apis/board.api";
+import { modalsListener } from "./listeners/modals.listener";
 import { boardSlice } from "./slices/board.slice";
 import { filtersSlice } from "./slices/filters.slice";
 import { modalsSlice } from "./slices/modals.slice";
@@ -17,7 +18,9 @@ export const makeStore = () =>
     },
     devTools: process.env.NODE_ENV !== "production",
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(boardApi.middleware),
+      getDefaultMiddleware()
+        .concat(boardApi.middleware)
+        .prepend(modalsListener.middleware),
   });
 
 export type AppStore = ReturnType<typeof makeStore>;

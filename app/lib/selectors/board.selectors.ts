@@ -37,10 +37,13 @@ export const selectTasksByColumn = (column: Columns) => (state: RootState) =>
 export const selectCurrentTask = (state: RootState) =>
   selectBoardSlice(state).currentTask;
 
-export const selectTaskById = (id: string | number) => (state: RootState) => {
-  const board = selectBoard(state);
+export const selectTaskById =
+  (id: string | number | null) => (state: RootState) => {
+    const board = selectBoard(state);
 
-  return Object.values(board)
-    .flat()
-    .find((task) => task.id === id);
-};
+    if (!id) return null;
+
+    return Object.values(board)
+      .flat()
+      .find((task) => task.id === id);
+  };

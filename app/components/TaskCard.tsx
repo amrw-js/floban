@@ -13,10 +13,11 @@ type TaskCardProps = {
   index: number;
   column: Columns | null;
   className?: string;
+  onClick?: (task: Task, column: Columns | null) => void;
 };
 
 export const TaskCard: FC<TaskCardProps> = (props) => {
-  const { task, className, index, column } = props;
+  const { task, className, index, column, onClick } = props;
 
   const {
     attributes,
@@ -35,14 +36,21 @@ export const TaskCard: FC<TaskCardProps> = (props) => {
     transition,
   };
 
+  const handleClick = () => {
+    if (onClick && !isDragging) {
+      onClick(task, column);
+    }
+  };
+
   return (
     <Card
       ref={setNodeRef}
       style={style}
       {...listeners}
       {...attributes}
+      onClick={handleClick}
       className={cn(
-        "h-full cursor-grab transition-all select-none hover:shadow-lg active:cursor-grabbing",
+        "h-full cursor-pointer transition-all select-none hover:shadow-lg active:cursor-grabbing",
         isDragging && "opacity-50",
         className
       )}

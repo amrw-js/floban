@@ -2,9 +2,20 @@
 
 import { useState } from "react";
 
-import { DndContext, DragOverlay } from "@dnd-kit/core";
+import {
+  DndContext,
+  DragOverlay,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
 
 import { useTaskDnd } from "@/app/hooks/useTaskDnd";
+import {
+  setCreateTaskFor,
+  setPreviewedTaskId,
+} from "@/app/lib/slices/modals.slice";
+import { useAppDispatch } from "@/app/lib/store";
 import { Task } from "@/app/types/board.types";
 
 import { Columns, COLUMNS_TITLES } from "../../constants/board.constants";
@@ -31,6 +42,8 @@ export const Board = () => {
     doneTasksError,
   } = useColumns();
 
+  const dispatch = useAppDispatch();
+
   const [activeTask, setActiveTask] = useState<Task | null>(null);
   const [overIndex, setOverIndex] = useState<number | null>(null);
   const [overColumn, setOverColumn] = useState<Columns | null>(null);
@@ -42,8 +55,25 @@ export const Board = () => {
       setOverColumn,
     });
 
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 0.5,
+      },
+    })
+  );
+
+  const onTaskClick = (task: Task) => {
+    dispatch(setPreviewedTaskId(task.id));
+  };
+
+  const onAddTaskClicked = (column: Columns) => {
+    dispatch(setCreateTaskFor(column));
+  };
+
   return (
     <DndContext
+      sensors={sensors}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
       onDragOver={handleDragOver}
@@ -59,6 +89,8 @@ export const Board = () => {
           errored={backlogTasksError}
           overIndex={overIndex}
           overColumn={overColumn}
+          onTaskClick={onTaskClick}
+          onAddTask={onAddTaskClicked}
         />
         <Column
           column={Columns.TODO}
@@ -69,6 +101,8 @@ export const Board = () => {
           errored={todoTasksError}
           overIndex={overIndex}
           overColumn={overColumn}
+          onTaskClick={onTaskClick}
+          onAddTask={onAddTaskClicked}
         />
         <Column
           column={Columns.IN_PROGRESS}
@@ -79,6 +113,8 @@ export const Board = () => {
           errored={inProgressTasksError}
           overIndex={overIndex}
           overColumn={overColumn}
+          onTaskClick={onTaskClick}
+          onAddTask={onAddTaskClicked}
         />
         <Column
           column={Columns.REVIEW}
@@ -89,6 +125,8 @@ export const Board = () => {
           errored={reviewTasksError}
           overIndex={overIndex}
           overColumn={overColumn}
+          onTaskClick={onTaskClick}
+          onAddTask={onAddTaskClicked}
         />
         <Column
           column={Columns.DONE}
@@ -99,6 +137,8 @@ export const Board = () => {
           errored={doneTasksError}
           overIndex={overIndex}
           overColumn={overColumn}
+          onTaskClick={onTaskClick}
+          onAddTask={onAddTaskClicked}
         />
       </div>
       <DragOverlay>
