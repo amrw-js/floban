@@ -52,7 +52,6 @@ export const useTaskDnd = ({
     const fromIndex = activeTask.index;
     const toIndex = overData.index ?? 0;
 
-    // Don't do anything if dropped in same position
     if (fromColumn === toColumn && fromIndex === toIndex) {
       setOverIndex(null);
       setOverColumn(null);
@@ -60,14 +59,8 @@ export const useTaskDnd = ({
       return;
     }
 
-    // Calculate new order
     const newOrder = toIndex;
 
-    console.log(
-      `Moving task ${active.id} from ${fromColumn}[${fromIndex}] to ${toColumn}[${toIndex}]`
-    );
-
-    // 1. Optimistic update - update UI immediately
     dispatch(
       moveTaskLocally({
         taskId: active.id.toString(),

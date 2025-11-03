@@ -32,7 +32,7 @@ type ColumnProps = {
   activeTask?: Task | null;
 };
 
-const ITEM_HEIGHT = 200;
+const ITEM_HEIGHT = 150;
 const GAP = 12;
 
 export const Column: FC<ColumnProps> = (props) => {
@@ -91,7 +91,7 @@ export const Column: FC<ColumnProps> = (props) => {
       <SortableContext items={taskIds} strategy={verticalListSortingStrategy}>
         <VirtualList
           itemCount={taskCount}
-          generateKey={(index) => tasks[index]?.id ?? index}
+          generateKey={(index) => `${tasks[index]?.title}-${index}`}
           renderItem={renderItem}
           itemHeight={ITEM_HEIGHT}
           gap={GAP}

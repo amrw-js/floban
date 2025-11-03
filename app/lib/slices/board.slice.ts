@@ -3,21 +3,9 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Columns } from "@/app/constants/board.constants";
 import { SLICES } from "@/app/constants/store.constants";
 import { Task } from "@/app/types/board.types";
+import { MoveTaskPayload, TasksState } from "@/app/types/slices.types";
 
 import { boardApi } from "../apis/board.api";
-
-export interface TasksState {
-  board: Record<Columns, Task[]>;
-  currentTask: Task | null;
-}
-
-interface MoveTaskPayload {
-  taskId: string;
-  from: Columns;
-  to: Columns;
-  toIndex: number;
-  newOrder: number;
-}
 
 const initialState: TasksState = {
   board: {

@@ -4,6 +4,7 @@ import { useDispatch, useSelector, useStore } from "react-redux";
 import { SLICES } from "../constants/store.constants";
 import { boardApi } from "./apis/board.api";
 import { boardSlice } from "./slices/board.slice";
+import { filtersSlice } from "./slices/filters.slice";
 import { modalsSlice } from "./slices/modals.slice";
 
 export const makeStore = () =>
@@ -12,6 +13,7 @@ export const makeStore = () =>
       [boardApi.reducerPath]: boardApi.reducer,
       [SLICES.MODALS]: modalsSlice.reducer,
       [SLICES.BOARD]: boardSlice.reducer,
+      [SLICES.FILTERS]: filtersSlice.reducer,
     },
     devTools: process.env.NODE_ENV !== "production",
     middleware: (getDefaultMiddleware) =>
