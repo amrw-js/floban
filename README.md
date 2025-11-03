@@ -1,36 +1,102 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+# 🗂️ FloBan — Kanban Board App
 
-First, run the development server:
+A simple Kanban-style task management app built with **Next.js**, **Redux Toolkit**, and **json-server** for mock APIs.
+
+---
+
+## 🚀 Getting Started
+
+### 1️⃣ Install dependencies
+
+You can use **npm**, **yarn**, or **pnpm**:
 
 ```bash
-npm run dev
+npm install
 # or
-yarn dev
+yarn install
 # or
-pnpm dev
-# or
-bun dev
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 2️⃣ Generate mock data
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Before running the app, generate initial mock data for the local API:
 
-## Learn More
+```bash
+npm run generate-mocks
+# or
+yarn generate-mocks
+# or
+pnpm generate-mocks
+```
 
-To learn more about Next.js, take a look at the following resources:
+This will populate `mocks/db.json` with fake tasks and columns.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 3️⃣ Run the app
 
-## Deploy on Vercel
+Run both the **Next.js frontend** and the **mock API** together:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm run dev:all
+# or
+yarn dev:all
+# or
+pnpm dev:all
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This command:
+- Starts the Next.js app at **http://localhost:3000**
+- Starts the mock API server at **http://localhost:3001**
+
+---
+
+## 🧩 Available Scripts
+
+| Command | Description |
+|----------|-------------|
+| `dev` | Run Next.js dev server only |
+| `api` | Run mock API server only |
+| `dev:all` | Run both app and API concurrently |
+| `build` | Build the app for production |
+| `start` | Start production server |
+| `lint` | Run ESLint |
+| `format` | Format code with Prettier |
+| `generate-mocks` | Generate fake data in `mocks/db.json` |
+
+---
+
+## 📦 Tech Stack
+
+- **Next.js** 14+
+- **React** 19
+- **Redux Toolkit** & RTK Query
+- **MUI** (Material UI)
+- **Tailwind CSS**
+- **json-server** (mock backend)
+- **TypeScript**
+
+---
+
+## 💡 Tips
+
+- If the mock API port (3001) is already in use, change it in the script:
+  ```bash
+  "api": "json-server mocks/db.json --port 4000"
+  ```
+- You can re-generate data anytime with:
+  ```bash
+  npm run generate-mocks
+  ```
+
+---
+
+## 🖼️ Preview
+
+FloBan organizes your tasks across multiple columns (e.g., **Todo**, **In Progress**, **Done**) with drag-and-drop support and mock backend persistence.
+
+---
